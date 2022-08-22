@@ -14,6 +14,7 @@ class TestView(SessionWizardView):
         question = Question.objects.all()[self.steps.step0]
         context['question_title'] = question.question_title
         context['question_body'] = question.question_body
+        return context
 
     def get_template_names(self):
         return 'test.html'
@@ -50,3 +51,9 @@ class TestView(SessionWizardView):
 
 class ResultView(TemplateView):
     template_name = 'result.html'
+    result = Result.objects.all()[-1]
+
+    def get_context_data(self, objects_list, **kwargs, ):
+        context = super().get_context_data(**kwargs)
+        context['result'] = self.result
+        return context
